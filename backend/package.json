@@ -1,0 +1,42 @@
+{
+  "name": "its-systems-backend",
+  "version": "1.0.0",
+  "description": "Backend para ITS SYSTEMS E-commerce + CMS",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix",
+    "format": "prettier --write \"src/**/*.js\"",
+    "prisma:generate": "pnpm exec prisma generate",
+    "prisma:migrate": "pnpm exec prisma migrate dev",
+    "prisma:studio": "pnpm exec prisma studio"
+  },
+  "keywords": [
+    "ecommerce",
+    "cms",
+    "its-systems"
+  ],
+  "author": "ITS SYSTEMS",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^7.2.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "winston": "^3.19.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.7.4",
+    "prisma": "^7.2.0"
+  }
+}
