@@ -18,10 +18,99 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  pages     Page[]
+  media     Media[]
+
   @@map("users")
+}
+
+model Page {
+  id          Int          @id @default(autoincrement())
+  title       String
+  slug        String       @unique
+  content     String       @db.Text
+  excerpt     String?      @db.Text
+  status      PageStatus   @default(DRAFT)
+  publishedAt DateTime?
+  authorId    Int
+  author      User         @relation(fields: [authorId], references: [id])
+  seoMetadata SEOMetadata?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("pages")
+}
+
+model Media {
+  id           Int        @id @default(autoincrement())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  path         String
+  url          String
+  alt          String?
+  caption      String?
+  uploadedById Int
+  uploadedBy   User       @relation(fields: [uploadedById], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("media")
+}
+
+model Menu {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  location  String
+  items     MenuItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("menus")
+}
+
+model MenuItem {
+  id        Int      @id @default(autoincrement())
+  label     String
+  url       String
+  order     Int      @default(0)
+  parentId  Int?
+  parent    MenuItem? @relation("MenuItemToMenuItem", fields: [parentId], references: [id])
+  children  MenuItem[] @relation("MenuItemToMenuItem")
+  menuId    Int
+  menu      Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("menu_items")
+}
+
+model SEOMetadata {
+  id              Int      @id @default(autoincrement())
+  metaTitle       String?
+  metaDescription String?  @db.Text
+  metaKeywords    String?
+  ogTitle         String?
+  ogDescription   String?  @db.Text
+  ogImage         String?
+  twitterCard     String?
+  canonicalUrl    String?
+  pageId          Int      @unique
+  page            Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("seo_metadata")
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+enum PageStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
 }
