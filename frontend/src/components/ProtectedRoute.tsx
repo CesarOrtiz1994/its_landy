@@ -5,9 +5,14 @@ import { useAuth } from '../context/AuthContext';
 interface ProtectedRouteProps {
   children: ReactNode;
   requireAdmin?: boolean;
+  allowedRoles?: string[];
 }
 
-export const ProtectedRoute = ({ children, requireAdmin = false }: ProtectedRouteProps) => {
+export const ProtectedRoute = ({ 
+  children, 
+  requireAdmin = false,
+  allowedRoles 
+}: ProtectedRouteProps) => {
   const { isAuthenticated, user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -22,8 +27,16 @@ export const ProtectedRoute = ({ children, requireAdmin = false }: ProtectedRout
     return <Navigate to="/login" replace />;
   }
 
-  if (requireAdmin && user?.role !== 'ADMIN') {
-    return <Navigate to="/" replace />;
+  // Si se especifican roles permitidos, verificar
+  if (allowedRoles && allowedRoles.length > 0) {
+    if (!allowedRoles.includes(user?.role || '')) {
+      return <Navigate to="/dashboard" replace />;
+    }
+  }
+
+  // Si requiere admin (SUPER_ADMIN o ADMIN)
+  if (requireAdmin && !['SUPER_ADMIN', 'ADMIN'].includes(user?.role || '')) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;

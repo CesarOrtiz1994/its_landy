@@ -45,7 +45,7 @@ export const authenticate = async (req, res, next) => {
 };
 
 export const isAdmin = (req, res, next) => {
-  if (req.user.role !== 'ADMIN') {
+  if (!['SUPER_ADMIN', 'ADMIN'].includes(req.user.role)) {
     return res.status(403).json({
       success: false,
       message: 'Acceso denegado. Se requieren permisos de administrador',

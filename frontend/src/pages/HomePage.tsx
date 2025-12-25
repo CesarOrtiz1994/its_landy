@@ -1,5 +1,6 @@
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { Settings, LogOut } from 'lucide-react';
 
 export const HomePage = () => {
   const { user, logout } = useAuth();
@@ -31,21 +32,39 @@ export const HomePage = () => {
                 <p className="flex items-center">
                   <span className="font-medium mr-2">Rol:</span>
                   <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                    user.role === 'ADMIN' 
-                      ? 'bg-purple-100 text-purple-800' 
-                      : 'bg-blue-100 text-blue-800'
+                    user.role === 'SUPER_ADMIN' ? 'bg-yellow-100 text-yellow-800' :
+                    user.role === 'ADMIN' ? 'bg-purple-100 text-purple-800' :
+                    user.role === 'EDITOR' ? 'bg-green-100 text-green-800' :
+                    user.role === 'SALES' ? 'bg-orange-100 text-orange-800' :
+                    'bg-blue-100 text-blue-800'
                   }`}>
-                    {user.role}
+                    {user.role === 'SUPER_ADMIN' ? '👑 Super Admin' :
+                     user.role === 'ADMIN' ? '👤 Admin' :
+                     user.role === 'EDITOR' ? '✏️ Editor' :
+                     user.role === 'SALES' ? '💰 Ventas' :
+                     '🛒 Usuario'}
                   </span>
                 </p>
               </div>
               
-              <button
-                onClick={handleLogout}
-                className="mt-6 px-6 py-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors"
-              >
-                Cerrar Sesión
-              </button>
+              <div className="flex gap-4 mt-6">
+                {user.role !== 'USER' && (
+                  <Link
+                    to="/cms"
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-lg font-semibold hover:from-primary-600 hover:to-secondary-600 transition-all flex items-center justify-center gap-2"
+                  >
+                    <Settings className="w-5 h-5" />
+                    Panel CMS
+                  </Link>
+                )}
+                <button
+                  onClick={handleLogout}
+                  className="flex-1 px-6 py-3 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Cerrar Sesión
+                </button>
+              </div>
             </div>
           )}
         </div>

@@ -13,6 +13,7 @@ model User {
   password  String
   firstName String
   lastName  String
+  phone     String?
   role      Role     @default(USER)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -20,6 +21,7 @@ model User {
 
   pages     Page[]
   media     Media[]
+  addresses Address[]
 
   @@map("users")
 }
@@ -104,9 +106,31 @@ model SEOMetadata {
   @@map("seo_metadata")
 }
 
+model Address {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label        String
+  fullName     String
+  phone        String
+  street       String
+  city         String
+  state        String
+  zipCode      String
+  country      String   @default("México")
+  isDefault    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("addresses")
+}
+
 enum Role {
-  USER
+  SUPER_ADMIN
   ADMIN
+  EDITOR
+  SALES
+  USER
 }
 
 enum PageStatus {
