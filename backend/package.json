@@ -13,7 +13,11 @@
     "format": "prettier --write \"src/**/*.js\"",
     "prisma:generate": "pnpm exec prisma generate",
     "prisma:migrate": "pnpm exec prisma migrate dev",
-    "prisma:studio": "pnpm exec prisma studio"
+    "prisma:studio": "pnpm exec prisma studio",
+    "prisma:seed": "node prisma/seed.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "keywords": [
     "ecommerce",
@@ -23,20 +27,25 @@
   "author": "ITS SYSTEMS",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^7.2.0",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "winston": "^3.19.0",
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
+    "@prisma/client": "5.22.0",
+    "@types/jest": "^30.0.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
+    "jest": "^30.2.0",
     "prettier": "^3.7.4",
-    "prisma": "^7.2.0"
+    "prisma": "5.22.0",
+    "supertest": "^7.1.4"
   }
 }
